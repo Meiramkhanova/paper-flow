@@ -1,0 +1,383 @@
+{
+  "info": {
+    "name": "PaperFlow API",
+    "description": "Working requests for all PaperFlow REST endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "researcherId", "value": "1" },
+    { "key": "manuscriptId", "value": "1" },
+    { "key": "journalId", "value": "1" },
+    { "key": "requirementId", "value": "1" },
+    { "key": "submissionId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Researchers",
+      "item": [
+        {
+          "name": "POST Create Researcher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.collectionVariables.set('researcherId', String(data.id));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Adina Researcher\",\n  \"email\": \"adina@university.edu\",\n  \"institution\": \"Nazarbayev University\"\n}"
+            },
+            "url": "{{baseUrl}}/api/researchers"
+          }
+        },
+        {
+          "name": "GET All Researchers",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/researchers"
+          }
+        },
+        {
+          "name": "GET Researcher by Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/researchers/{{researcherId}}"
+          }
+        },
+        {
+          "name": "PUT Update Researcher",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Adina Researcher Updated\",\n  \"email\": \"adina@university.edu\",\n  \"institution\": \"NU\"\n}"
+            },
+            "url": "{{baseUrl}}/api/researchers/{{researcherId}}"
+          }
+        },
+        {
+          "name": "GET Researcher Manuscripts",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/researchers/{{researcherId}}/manuscripts"
+          }
+        },
+        {
+          "name": "DELETE Researcher",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/researchers/{{researcherId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Manuscripts",
+      "item": [
+        {
+          "name": "POST Create Manuscript",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.collectionVariables.set('manuscriptId', String(data.id));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"AI in Medicine\",\n  \"abstract\": \"A study of clinical machine learning applications.\",\n  \"keywords\": [\"AI\", \"medicine\", \"ML\"],\n  \"language\": \"en\",\n  \"researcherId\": {{researcherId}}\n}"
+            },
+            "url": "{{baseUrl}}/api/manuscripts"
+          }
+        },
+        {
+          "name": "GET All Manuscripts",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/manuscripts"
+          }
+        },
+        {
+          "name": "GET Manuscript by Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/manuscripts/{{manuscriptId}}"
+          }
+        },
+        {
+          "name": "PUT Update Manuscript",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"AI in Medicine (Updated)\",\n  \"abstract\": \"Updated abstract.\",\n  \"keywords\": [\"AI\", \"healthcare\"],\n  \"language\": \"en\",\n  \"researcherId\": {{researcherId}}\n}"
+            },
+            "url": "{{baseUrl}}/api/manuscripts/{{manuscriptId}}"
+          }
+        },
+        {
+          "name": "PATCH Manuscript",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"AI in Clinical Practice\"\n}"
+            },
+            "url": "{{baseUrl}}/api/manuscripts/{{manuscriptId}}"
+          }
+        },
+        {
+          "name": "GET Manuscript Submissions",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/manuscripts/{{manuscriptId}}/submissions"
+          }
+        },
+        {
+          "name": "DELETE Manuscript",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/manuscripts/{{manuscriptId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Journals",
+      "item": [
+        {
+          "name": "POST Create Journal",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.collectionVariables.set('journalId', String(data.id));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nature\",\n  \"publisher\": \"Springer Nature\",\n  \"website\": \"https://www.nature.com\",\n  \"subjectArea\": \"Multidisciplinary\"\n}"
+            },
+            "url": "{{baseUrl}}/api/journals"
+          }
+        },
+        {
+          "name": "GET All Journals",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/journals"
+          }
+        },
+        {
+          "name": "GET Journal by Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/journals/{{journalId}}"
+          }
+        },
+        {
+          "name": "PUT Update Journal",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nature\",\n  \"publisher\": \"Springer Nature\",\n  \"website\": \"https://www.nature.com\",\n  \"subjectArea\": \"Science\"\n}"
+            },
+            "url": "{{baseUrl}}/api/journals/{{journalId}}"
+          }
+        },
+        {
+          "name": "GET Journal Requirements",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/journals/{{journalId}}/requirements"
+          }
+        },
+        {
+          "name": "POST Create Requirement",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.collectionVariables.set('requirementId', String(data.id));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Max 8000 words\",\n  \"description\": \"Main text must not exceed 8000 words.\",\n  \"isMandatory\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/journals/{{journalId}}/requirements"
+          }
+        },
+        {
+          "name": "GET Journal Submissions",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/journals/{{journalId}}/submissions"
+          }
+        },
+        {
+          "name": "DELETE Journal",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/journals/{{journalId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Requirements",
+      "item": [
+        {
+          "name": "PUT Update Requirement",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Max 8000 words\",\n  \"description\": \"Updated: main text limit is 8000 words.\",\n  \"isMandatory\": true\n}"
+            },
+            "url": "{{baseUrl}}/api/requirements/{{requirementId}}"
+          }
+        },
+        {
+          "name": "DELETE Requirement",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/requirements/{{requirementId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Submissions",
+      "item": [
+        {
+          "name": "POST Create Submission",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const data = pm.response.json();",
+                  "  pm.collectionVariables.set('submissionId', String(data.id));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"manuscriptId\": {{manuscriptId}},\n  \"journalId\": {{journalId}},\n  \"status\": \"SUBMITTED\",\n  \"editorComment\": null\n}"
+            },
+            "url": "{{baseUrl}}/api/submissions"
+          }
+        },
+        {
+          "name": "GET All Submissions",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/submissions"
+          }
+        },
+        {
+          "name": "GET Submission by Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/submissions/{{submissionId}}"
+          }
+        },
+        {
+          "name": "PUT Update Submission",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"manuscriptId\": {{manuscriptId}},\n  \"journalId\": {{journalId}},\n  \"status\": \"UNDER_REVIEW\",\n  \"submittedAt\": \"2026-03-20T10:00:00.000Z\",\n  \"editorComment\": \"Assigned to reviewers\"\n}"
+            },
+            "url": "{{baseUrl}}/api/submissions/{{submissionId}}"
+          }
+        },
+        {
+          "name": "PATCH Submission Status",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ACCEPTED\",\n  \"editorComment\": \"Congratulations\"\n}"
+            },
+            "url": "{{baseUrl}}/api/submissions/{{submissionId}}"
+          }
+        },
+        {
+          "name": "DELETE Submission",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/submissions/{{submissionId}}"
+          }
+        }
+      ]
+    }
+  ]
+}

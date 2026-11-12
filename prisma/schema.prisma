@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SubmissionStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  REVISION_REQUIRED
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+model Researcher {
+  id          Int          @id @default(autoincrement())
+  fullName    String
+  email       String       @unique
+  institution String
+  manuscripts Manuscript[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Manuscript {
+  id           Int          @id @default(autoincrement())
+  title        String
+  abstract     String
+  keywords     String[]
+  language     String
+  researcherId Int
+  researcher   Researcher   @relation(fields: [researcherId], references: [id], onDelete: Cascade)
+  submissions  Submission[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model Journal {
+  id           Int                  @id @default(autoincrement())
+  name         String
+  publisher    String
+  website      String
+  subjectArea  String
+  requirements JournalRequirement[]
+  submissions  Submission[]
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+}
+
+model JournalRequirement {
+  id          Int      @id @default(autoincrement())
+  journalId   Int
+  journal     Journal  @relation(fields: [journalId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  isMandatory Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Submission {
+  id            Int              @id @default(autoincrement())
+  manuscriptId  Int
+  journalId     Int
+  manuscript    Manuscript       @relation(fields: [manuscriptId], references: [id], onDelete: Cascade)
+  journal       Journal          @relation(fields: [journalId], references: [id], onDelete: Cascade)
+  status        SubmissionStatus @default(DRAFT)
+  submittedAt   DateTime         @default(now())
+  editorComment String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}

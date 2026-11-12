@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: paperflow-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: paperflow
+      POSTGRES_PASSWORD: paperflow
+      POSTGRES_DB: paperflow
+    ports:
+      - "5433:5432"
+    volumes:
+      - paperflow_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U paperflow -d paperflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    container_name: paperflow-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgresql://paperflow:paperflow@postgres:5432/paperflow?schema=public
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  paperflow_pgdata:

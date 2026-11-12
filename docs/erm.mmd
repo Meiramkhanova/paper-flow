@@ -1,0 +1,13 @@
+%% PaperFlow ERM — вставь в https://mermaid.live и Export PNG/SVG
+
+flowchart TB
+  R["Researcher<br/>Исследователь"]
+  M["Manuscript<br/>Статья"]
+  S["Submission<br/>Подача"]
+  J["Journal<br/>Журнал"]
+  Q["JournalRequirement<br/>Требование"]
+
+  R -->|"1 → много<br/>researcherId"| M
+  M -->|"1 → много<br/>manuscriptId"| S
+  J -->|"1 → много<br/>journalId"| S
+  J -->|"1 → много<br/>journalId"| Q

@@ -1,0 +1,48 @@
+%% PaperFlow ERM с полями — вставь в https://mermaid.live и Export PNG/SVG
+
+erDiagram
+  RESEARCHER ||--o{ MANUSCRIPT : "1:N пишет"
+  MANUSCRIPT ||--o{ SUBMISSION : "1:N история"
+  JOURNAL ||--o{ SUBMISSION : "1:N принимает"
+  JOURNAL ||--o{ JOURNAL_REQUIREMENT : "1:N правила"
+
+  RESEARCHER {
+    int id PK
+    string fullName
+    string email UK
+    string institution
+  }
+
+  MANUSCRIPT {
+    int id PK
+    string title
+    string abstract
+    string keywords
+    string language
+    int researcherId FK
+  }
+
+  JOURNAL {
+    int id PK
+    string name
+    string publisher
+    string website
+    string subjectArea
+  }
+
+  JOURNAL_REQUIREMENT {
+    int id PK
+    int journalId FK
+    string title
+    string description
+    boolean isMandatory
+  }
+
+  SUBMISSION {
+    int id PK
+    int manuscriptId FK
+    int journalId FK
+    string status
+    datetime submittedAt
+    string editorComment
+  }
